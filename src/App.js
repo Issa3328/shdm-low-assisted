@@ -10,7 +10,6 @@ const Bell         = (p) => <Svg {...p}><path d="M10.268 21a2 2 0 0 0 3.464 0"/>
 const Star         = (p) => <Svg {...p}><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></Svg>;
 const ChevronRight = (p) => <Svg {...p}><path d="m9 18 6-6-6-6"/></Svg>;
 const Loader2      = (p) => <Svg {...p}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></Svg>;
-const Shield       = (p) => <Svg {...p}><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></Svg>;
 
 const Database     = (p) => <Svg {...p}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></Svg>;
 const Cpu          = (p) => <Svg {...p}><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></Svg>;
@@ -20,13 +19,6 @@ const SUPABASE_ANON_KEY = "sb_publishable_KEoCJtCLyGTJjqB1phGy2Q_v3PftUYH";
 const FLOW              = "low_assisted";
 const SURVEY_RETURN_URL = "https://www.surveymonkey.ca/r/5C7MWMD";
 
-// Visibility / Automation for this condition
-const isLow      = true;
-const isMed      = false;
-const isHigh     = false;
-const isLowAuto  = false;
-const isMedAuto  = true;
-const isHighAuto = false;
 const MODE_LABEL = "Info: Low · Control: Assisted";
 const VISIBILITY = "low";   // low | medium | high
 const AUTOMATION = "assisted";   // manual | assisted | automated
@@ -274,7 +266,6 @@ export default function App() {
   const [sidebarVisible,  setSidebarVisible]  = useState(false);
   const [currentTask,     setCurrentTask]     = useState(0);
   const [doneTasks,       setDoneTasks]       = useState([]);
-  const [orderNum,        setOrderNum]        = useState("");
 
   // sidebar/task bar follow the tracker (single source of truth)
   const syncTasks = (finished) => {
@@ -375,7 +366,6 @@ export default function App() {
     const num = `SH-${Math.floor(Math.random() * 90000) + 10000}`;
     tracker.action("order_place", { page:"order", target:selectedOffer?.name, details:{ order_num:num } });
     syncTasks(tracker.complete(4, "order_place", { offer:selectedOffer?.name, orderPlaced:true }));
-    setOrderNum(num);
     setStage("complete");
     setTimeout(() => {
       const url = `${SURVEY_RETURN_URL}?session=${encodeURIComponent(tracker.participantId)}`;
